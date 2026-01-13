@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
 
+import com.sebastian.springboot.todo.springboot_todo.exceptions.TaskNotFoundException;
 import com.sebastian.springboot.todo.springboot_todo.models.Task;
 
 @Service
@@ -31,21 +32,26 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task getTaskById(Long id) {
+        if (!tasks.containsKey(id)) {
+            throw new TaskNotFoundException(id);
+        }
         return tasks.get(id);
     }
 
     @Override
     public Task updateTask(Long id, Task task) {
-        if(tasks.containsKey(id)){
-            tasks.put(id, new Task(id, task.isCompleted(), task.getTitle()));
-            return tasks.get(id);
-        }else{
-            return null;
+        if (!tasks.containsKey(id)) {
+            throw new TaskNotFoundException(id);
         }
+        tasks.put(id, new Task(id, task.isCompleted(), task.getTitle()));
+        return tasks.get(id);
     }
 
     @Override
     public boolean deleteTask(Long id) {
+        if (!tasks.containsKey(id)) {
+            throw new TaskNotFoundException(id);
+        }
         return tasks.remove(id) != null;
     }
 
