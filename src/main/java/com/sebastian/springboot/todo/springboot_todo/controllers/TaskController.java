@@ -18,49 +18,67 @@ import com.sebastian.springboot.todo.springboot_todo.models.Task;
 import com.sebastian.springboot.todo.springboot_todo.services.TaskService;
 
 @RestController
-@RequestMapping("/api/task")
+@RequestMapping("/api")
 public class TaskController {
 
     @Autowired
     private TaskService service;
 
-    @PostMapping("")
-    public ResponseEntity<Task> createTask(@RequestBody Task body) {
+    //Version 1
+    @PostMapping("/v1/tasks")
+    public ResponseEntity<Task> createTaskV1(@RequestBody Task body) {
         Task newTask = service.createTask(body);
         return ResponseEntity.status(HttpStatus.CREATED).body(newTask);
     }
 
-    @GetMapping("")
-    public Collection<Task> getAllTask() {
+    @GetMapping("/v1/tasks")
+    public Collection<Task> getAllTaskV1() {
         return service.getAllTask();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
+    @GetMapping("/v1/tasks/{id}")
+    public ResponseEntity<Task> getTaskByIdV1(@PathVariable Long id) {
         Task task = service.getTaskById(id);
-        // if (task == null) {
-        //     return ResponseEntity.notFound().build();
-        // }
         return ResponseEntity.ok(task);
-
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task body) {
+    @PutMapping("/v1/tasks/{id}")
+    public ResponseEntity<Task> updateTaskV1(@PathVariable Long id, @RequestBody Task body) {
         Task task = service.updateTask(id, body);
-        // if (task == null) {
-        //     return ResponseEntity.notFound().build();
-        // }
         return ResponseEntity.status(HttpStatus.OK).body(task);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Task> deleteTask(@PathVariable Long id) {
-        // boolean deleted = service.deleteTask(id);
-        // if (!deleted) {
-        //     return ResponseEntity.notFound().build();
-        // }
+    @DeleteMapping("/v1/tasks/{id}")
+    public ResponseEntity<Task> deleteTaskV1(@PathVariable Long id) {
+        return ResponseEntity.noContent().build();
+    }
 
+    //Version 2
+    @PostMapping("/v2/tasks")
+    public ResponseEntity<Task> createTaskV2(@RequestBody Task body) {
+        Task newTask = service.createTask(body);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newTask);
+    }
+
+    @GetMapping("/v2/tasks")
+    public Collection<Task> getAllTaskV2() {
+        return service.getAllTask();
+    }
+
+    @GetMapping("/v2/tasks/{id}")
+    public ResponseEntity<Task> getTaskByIdV2(@PathVariable Long id) {
+        Task task = service.getTaskById(id);
+        return ResponseEntity.ok(task);
+    }
+
+    @PutMapping("/v2/tasks/{id}")
+    public ResponseEntity<Task> updateTaskV2(@PathVariable Long id, @RequestBody Task body) {
+        Task task = service.updateTask(id, body);
+        return ResponseEntity.status(HttpStatus.OK).body(task);
+    }
+
+    @DeleteMapping("/v2/tasks/{id}")
+    public ResponseEntity<Task> deleteTaskV2(@PathVariable Long id) {
         return ResponseEntity.noContent().build();
     }
 
